@@ -1,4 +1,4 @@
-export function useCountSpeechRecognition(targetWords: string[], silenceTimeoutDuration: number = 2000) {
+export const useCountSpeechRecognition = (targetWords: string[], silenceTimeoutDuration: number = 2000) => {
   const wordCounts = ref<{ [key: string]: number }>({});
   const transcript = ref('');
   const isListening = ref(false);
@@ -120,7 +120,7 @@ export function useCountSpeechRecognition(targetWords: string[], silenceTimeoutD
   };
 }
 
-export function useSpeechRecognition(silenceTimeoutDuration: number = 2000) {
+export const useSpeechRecognition = (silenceTimeoutDuration: number = 2000) => {
   const transcript = ref('');
   const isListening = ref(false);
   const isFinished = ref(false); // 認識が完全に終了したかどうかのフラグ

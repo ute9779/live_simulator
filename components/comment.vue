@@ -15,26 +15,36 @@
 </template>
 
 <script setup lang="ts">
+interface reaction {
+  word: string,
+  response: string
+}
 
 const props = defineProps({
   liveComment: { type: String, required: false },
-  // initialItems: { type: Array as () => { label: string, value: string }[], default: () => [] }
 })
 
 const emit = defineEmits(['updateItems'])
 
-const newComment = ref('')
-const commentArray = ref<string[]>([])
+import reactionArrayObject from '@/assets/json/reactions.json'
+const reactionArray = reactionArrayObject.reactions
+const randomReactionArray = reactionArrayObject.randomReactions
 
-const postComment = () => {
+const newComment = ref('')
+const commentArray = ref<string[]>(Array.from({ length: 10 }, () => ''))
+
+// コメントを投稿する
+const postComment = async() => {
   const element: HTMLInputElement = <HTMLInputElement> document.getElementById('comment_input')
-  if (element) {
+  if (element.value) {
     newComment.value = element.value
     element.value = ''
+    await updateComment(newComment.value)
   }
 }
 
-const updatecomment = (newComment: string) => {
+// コメントビューを更新する
+const updateComment = (newComment: string) => {
   let updateArray = []
   for(let i = 0; i < commentArray.value.length; i++){
     updateArray[i] = commentArray.value[i + 1]
@@ -43,65 +53,48 @@ const updatecomment = (newComment: string) => {
   commentArray.value = updateArray
 }
 
-const reactionArray = [{
-  word: '殺す',
-  response: 'あ',
-}]
-
+// 音声に対応するレスポンスを投稿する
 const reactionNewComment = async(liveComment: string) => {
+  // 1~6回投稿
   const num = Math.floor(Math.random() * 6) + 1
   for (let i = 0; i < num; i++) {
     for(const reaction of reactionArray){
-      if (reaction.word == liveComment) {
+      if (liveComment.includes(reaction.word)) {
         newComment.value = reaction.response
-        await updatecomment(newComment.value)
+        await updateComment(newComment.value)
         continue
       }
     }
   }
 }
 
-watch(props, (newValue) =>{
-  if(newValue.liveComment){
-    reactionNewComment(newValue.liveComment)
-  }
-})
-
-const randomNewComment = () => {
+// ランダムにコメントを投稿する
+const randomNewComment = (commentArray: Array<reaction>) => {
+  const array = commentArray
   setInterval(() => {
-      const num = Math.floor(Math.random() * 6) + 1
-      if (num == 1) {
-        newComment.value = 'とあるvが'
-      } else if (num == 2) {
-        newComment.value = '４ね'
-      } else if (num == 3) {
-        newComment.value = 'www'
-      } else if (num == 4) {
-        newComment.value = 'しにたい'
-      } else if (num == 5) {
-        newComment.value = 'は？'
-      } else if (num == 6) {
-        newComment.value = 'あ'
-      }
+      const num = Math.floor(Math.random() * array.length) + 1
+
+      newComment.value = array[num].response
+      
       if(newComment.value){
-        updatecomment(newComment.value)
+        updateComment(newComment.value)
         newComment.value = ''
       }
     },
-    1000
+    // 1.5秒
+    1500
   )
 }
 
-// watch(newComment, (newValue) =>{
-//   if(newValue){
-//     updatecomment(newValue)
-//     newComment.value = ''
-//   }
-// })
+// 放送主コメントが更新されたときレスポンス
+watch(props, (newValue) =>{
+  if(newValue.liveComment){
+    reactionNewComment(useKatakanaToHiragana(newValue.liveComment))
+  }
+})
 
 onMounted(() => {
-  commentArray.value[9] = 'こんにちは'
-  randomNewComment()
+  randomNewComment(randomReactionArray)
 })
 
 </script>

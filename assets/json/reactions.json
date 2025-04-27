@@ -1,0 +1,63 @@
+{
+  "reactions": [
+    {
+      "word": "こんにちは",
+      "response": "こん"
+    },
+    {
+      "word": "終わります",
+      "response": "乙"
+    }
+  ],
+
+  "randomReactions": [
+    {
+      "word": "",
+      "response": "こわ"
+    },
+    {
+      "word": "",
+      "response": "４ね"
+    },
+    {
+      "word": "",
+      "response": "www"
+    },
+    {
+      "word": "",
+      "response": "しにたい"
+    },
+    {
+      "word": "",
+      "response": "は？"
+    },
+    {
+      "word": "",
+      "response": "あ"
+    },
+    {
+      "word": "",
+      "response": "おい"
+    },
+    {
+      "word": "",
+      "response": "ｸｶ"
+    },
+    {
+      "word": "",
+      "response": "シャ４"
+    },
+    {
+      "word": "",
+      "response": "もこたん"
+    },
+    {
+      "word": "",
+      "response": "どわーｗ"
+    },
+    {
+      "word": "",
+      "response": "うおｗ"
+    }
+  ]
+}
