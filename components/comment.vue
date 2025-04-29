@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <table>
-      <tbody>
-        <tr v-for="(comment) in commentArray">
-          <td v-show="comment">{{ comment }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <form @submit.prevent="postComment">
-      <input id="comment_input" type="text" autocomplete="off" maxlength="100">
-      <button type="submit">コメントする</button>
-    </form>
+  <div class="comment_area">
+    <div class="comment_view">
+      <table>
+        <tbody>
+          <tr v-for="(comment) in commentArray">
+            <td v-show="comment">{{ comment }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="comment_input">
+      <form @submit.prevent="postComment">
+        <input id='comment_input_area' type="text" autocomplete="off" maxlength="100">
+        <button type="submit">コメントする</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -31,11 +35,11 @@ const reactionArray = reactionArrayObject.reactions
 const randomReactionArray = reactionArrayObject.randomReactions
 
 const newComment = ref('')
-const commentArray = ref<string[]>(Array.from({ length: 10 }, () => ''))
+const commentArray = ref<string[]>(Array.from({ length: 30 }, () => ''))
 
 // コメントを投稿する
 const postComment = async() => {
-  const element: HTMLInputElement = <HTMLInputElement> document.getElementById('comment_input')
+  const element: HTMLInputElement = <HTMLInputElement> document.getElementById('comment_input_area')
   if (element.value) {
     newComment.value = element.value
     element.value = ''
@@ -98,21 +102,32 @@ onMounted(() => {
 })
 
 </script>
+
 <style scoped>
+.comment_area {
+  padding: 5px 0px 5px 0px;
+  display: flex;
+  flex-direction: column; /* 要素を縦に並べる */
+  height: 100%; /* 親要素の高さいっぱいにする */
+}
+
+.comment_view {
+  flex-grow: 1;
+}
+
+.comment_input {
+  position: sticky;
+}
+
 table {
   border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
-  font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
+  width: 100%;
 }
 
 th,
 td {
   border: 1px solid rgb(160 160 160);
-  width: 1000px;
-  max-width: 1000px;
 }
-
-
 </style>
